@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34408.163
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatBot", "ChatBot\ChatBot.csproj", "{57D39A22-60E3-4FC3-A4EE-2317E54F990E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatUtil", "ChatUtil\ChatUtil.csproj", "{3F16092B-B45D-4559-A1E6-D196395185BE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatDB", "ChatDB\ChatDB.csproj", "{405C9E48-DE14-4321-AD42-399A4B9AD4E1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{57D39A22-60E3-4FC3-A4EE-2317E54F990E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57D39A22-60E3-4FC3-A4EE-2317E54F990E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57D39A22-60E3-4FC3-A4EE-2317E54F990E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57D39A22-60E3-4FC3-A4EE-2317E54F990E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F16092B-B45D-4559-A1E6-D196395185BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F16092B-B45D-4559-A1E6-D196395185BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F16092B-B45D-4559-A1E6-D196395185BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F16092B-B45D-4559-A1E6-D196395185BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{405C9E48-DE14-4321-AD42-399A4B9AD4E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{405C9E48-DE14-4321-AD42-399A4B9AD4E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{405C9E48-DE14-4321-AD42-399A4B9AD4E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{405C9E48-DE14-4321-AD42-399A4B9AD4E1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {718D9821-3102-4183-9D3D-CFA363F67A15}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,148 @@
+﻿@model ChatBot.Models.UserData
+
+@Html.Partial("index_design", this.Model)
+
+<script>
+     $(function () {
+        var msg = '@ViewBag.ErrorMessage';
+        if (msg != '') alert(msg);
+    });
+</script>
+<script>
+    var flag = false;
+
+    document.addEventListener("input", function (e) {
+        if (e.target.tagName.toLowerCase() === "textarea") {
+            autoResize(e.target);
+        }
+    });
+
+    function autoResize(textarea) {
+        textarea.style.height = "auto";
+        textarea.style.height = 1 + textarea.scrollHeight + "px";
+    }
+
+    $(document).ready(function () {
+        $('#userInput').keydown(function (event) {
+            if (event.key === 'Enter') {
+                if (!event.shiftKey) {
+                    event.preventDefault();
+
+                    if(!flag) sendMessage();
+                }
+            }
+        });
+    });
+
+    var userInput = document.getElementById('userInput');
+    var chatOutput = document.getElementById('chatOutput');
+
+    function sendMessage() {
+        flag = true;
+        const message = userInput.value;
+
+        if (message.trim() === '') {
+            alert('질문을 입력하세요.');
+            flag = false;
+            return;
+        }
+
+        const userMessageContainer = document.createElement('div');
+        userMessageContainer.className = 'user-message';
+        userMessageContainer.innerHTML = '<strong>@this.Model.UserId :</strong>';
+        chatOutput.appendChild(userMessageContainer);
+
+        const userMessageContent = document.createElement('div');
+        const preElement = document.createElement('pre');
+        preElement.textContent = message;
+        userMessageContent.appendChild(preElement);
+        userMessageContainer.appendChild(userMessageContent);
+
+        MakeRoom(message);
+        scrollDown();
+    }
+
+    function MakeRoom(message) {
+        var sendData = {
+            userId: "@this.Model.UserId",
+            content: message,
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: '/chat/api/Home/MakeRoom',
+            data: sendData,
+            dataType: 'json',
+            success: function (data) {
+                roomId = data;
+                getChatResponse(message);
+            },
+            error: function (jqXHR) {
+                console.log(jqXHR);
+            }
+        });
+    }
+
+    function getChatResponse(msg) {
+        if (flag) {
+            userInput.value = '답변 중입니다...';
+            $(".send-button").attr("disabled", true);
+            $("#userInput").attr("readonly", true);
+            $(".send-button").addClass('disabled');
+            $("#userInput").css("height", '');
+        }
+
+        var sendData = {
+            content: msg,
+            userId: "@this.Model.UserId",
+            RoomId: roomId,
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: '/chat/api/Home/Chat',
+            data: sendData,
+            dataType: 'json',
+            success: function (data) {
+
+                const botMessageContainer = document.createElement('div');
+                botMessageContainer.className = 'bot-message';
+                botMessageContainer.innerHTML = '<strong>NamuChat :</strong>';
+                chatOutput.appendChild(botMessageContainer);
+
+                const botMessageContent = document.createElement('div');
+                const preElement = document.createElement('pre');
+                preElement.className = 'bot-message';
+                preElement.textContent = data;
+                botMessageContent.appendChild(preElement);
+                botMessageContainer.appendChild(botMessageContent);
+
+                reset();
+                scrollDown();
+                OpenDetail(roomId);
+            },
+            error: function (jqXHR) {
+                chatOutput.innerHTML += `<div class="bot-message"><strong>NamuChat : <strong></div>`;
+                chatOutput.innerHTML += `<div class="bot-message">잠시 후에 다시 시도하고, 문제가 지속된다면 관리자에게 문의하십시오.</div>`;
+
+                console.log(jqXHR);
+
+                reset();
+                scrollDown();
+            }
+        });
+    }
+
+    function reset() {
+        userInput.value = '';
+        $(".send-button").attr("disabled", false);
+        $("#userInput").attr("readonly", false);
+        $(".send-button").removeClass('disabled');
+        flag = false;
+    }
+
+    function scrollDown() {
+        chatOutput.scrollTop = chatOutput.scrollHeight;
+    }
+
+</script>

@@ -1,0 +1,26 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout_login.cshtml";
+}
+
+@Html.Partial("index_design")
+
+<script>
+    function login() {
+        var id = $('#UserID').val();
+
+        if (!id) {
+            alert("ID를 입력해주세요.");
+            return;
+        }
+
+        $("form").submit();
+    }
+</script>
+
+<script>
+     $(function () {
+        var msg = '@ViewBag.ErrorMessage';
+        if (msg != '') alert(msg);
+    });
+</script>
+

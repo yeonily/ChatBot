@@ -26,6 +26,11 @@ namespace ChatUtil
             this.APIURLPath = APIURLPath;
         }
 
+        /// <summary>
+        /// 채팅 발송
+        /// </summary>
+        /// <param name="messages"></param>
+        /// <returns></returns>
         public async Task<string> SendChat(List<Message> messages)
         {
             using (HttpClient client = new HttpClient())

@@ -1,0 +1,127 @@
+﻿<div class="sidebar">
+    <!-- 로고 파일 영역 -->
+    <div class="log-file-area">
+        <img class="img_logo" src="~/Content/images/Logo.png" />
+    </div>
+
+    <!-- 새채팅 영역 -->
+    <div class="new-chat-area">
+        <button id="context-menu-button" onclick="NewChat()">New Chat</button>
+    </div>
+
+    <!-- 링크 영역 -->
+    <div class="link-area" id="linkArea">
+        <div class="context-menu">
+            <div class="context-menu-item">Delete Links</div>
+        </div>
+    </div>
+
+    <!-- 유저 정보 영역 -->
+    <div class="user-info-area">
+        <div class="user-info">
+            @this.Model.UserId <a href="@Url.Action("LogOut","Login")" style="border-top: none;"><i class="fas fa-sign-out-alt" style="color: #ffffff;"></i></a>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        RequestHistory();
+    });
+
+    var chatLink = $('#linkArea');
+
+    function RequestHistory() {
+        const sendData = {
+            userId: "@this.Model.UserId"
+        };
+        $.ajax({
+            type: 'POST',
+            url: '/chat/api/Home/ChatHistory',
+            data: sendData,
+            dataType: 'json',
+            success: function (datas) {
+                datas.forEach(function (data) {
+                    chatLink.append('<a class="room-' + data.RoomId + '" href="javascript:;" onclick="OpenDetail(\'' + data.RoomId + '\');"><div class="chat-title">' + data.RoomName + '</div><div> ' + formatDate(data.StartDate) + '</div></a><i class="fas fa-trash-alt" style="color: #ffffff; cursor: pointer;  margin-bottom: 5px;" onclick="deleteChat(\'' + data.RoomId + '\');"></i>');
+                });
+
+                focusRoom();
+            },
+            error: function (jqXHR) {
+                console.log(jqXHR);
+            }
+        });
+    }
+
+    function OpenDetail(Id) {
+        window.location.href = "/Chat/Home/Detail/" + Id;
+    }
+
+    function focusRoom() {
+        const selectedRoomId = extractRoomIdFromPath();
+
+        const roomElement = $('.room-' + selectedRoomId);
+
+        if (roomElement.length > 0) {
+            roomElement.addClass('focus-color');
+        } else {
+            const existingFocusedRoom = $('.focus-color');
+
+            if (existingFocusedRoom.length > 0) {
+                existingFocusedRoom.removeClass('focus-color');
+            }
+        }
+    }
+
+    function extractRoomIdFromPath() {
+        var path = window.location.pathname;
+
+        var pathSegments = path.split('/');
+
+        var roomId = pathSegments[pathSegments.length - 1];
+
+        return roomId;
+    }
+
+    function formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2)
+            month = '0' + month;
+        if (day.length < 2)
+            day = '0' + day;
+
+        return [year, month, day].join('-');
+    }
+
+    function NewChat() {
+        window.location.href = '@Url.Action("Index", "Home")';
+    }
+
+    function deleteChat(RoomId) {
+        const sendData = {
+            RoomId: RoomId
+        };
+
+        if (confirm("채팅을 삭제하시겠습니까?")) {
+            $.ajax({
+                type: 'POST',
+                url: '/chat/api/Home/Delete',
+                data: sendData,
+                dataType: 'json',
+                success: function () {
+                    window.location.href = '@Url.Action("Index", "Home")';
+                    alert("삭제되었습니다.");
+                },
+                error: function (jqXHR) {
+                    console.log(jqXHR);
+                }
+            });
+        } else {
+            return;
+        }
+    }
+</script>

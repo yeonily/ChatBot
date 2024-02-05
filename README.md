@@ -17,3 +17,4 @@
  
 
 ## 📜 테이블
+![240226_chatbot_erd drawio](https://github.com/yeonily/ChatBot/assets/109491137/baa8653e-aadb-4082-9131-d3d59d97f795)
